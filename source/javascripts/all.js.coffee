@@ -15,7 +15,7 @@ app.factory 'Square', ->
     mark: (player) -> 
       #todo: validation
       @player = player
-      @board.game.advanceTurn()
+      console.log @board.game.advanceTurn()
 
 
 app.factory 'Board', (Square) ->
@@ -28,7 +28,33 @@ app.factory 'Board', (Square) ->
 
     checkVictory: ->
       console.log("i am now checking for victory.")
-      false #stub
+
+      winner = null
+
+      # check rows. no time to explain
+      for y in [0...@width]
+        lastCell = null
+        for x in [0...@width]
+          thisCell = @grid[ @xy2index(x,y) ].player
+
+          # empty square means no winner in this row
+          if thisCell == null
+            lastCell = null
+            break
+
+          # first cell
+          if lastCell == null
+            lastCell = thisCell
+            continue
+
+          # subsequent cells
+          if lastCell != thisCell
+            lastCell = null
+            break
+
+        if lastCell then return true
+
+      false
 
 
 app.factory 'Player', ->
@@ -43,7 +69,7 @@ app.factory 'Game', ( Board, Player) ->
         new Player("X")
         new Player("O")
       ]
-      @board = new Board(this,3)
+      @board = new Board(this,3) # i guess this game only works with odd widths? no time to check wiki page.
       @currentPlayerIndex = 0
 
     currentPlayer: ->
@@ -51,6 +77,7 @@ app.factory 'Game', ( Board, Player) ->
 
     advanceTurn: ->
       @currentPlayerIndex = (@currentPlayerIndex + 1) % @players.length
+      @board.checkVictory()
 
 
 app.controller 'GameCtrl', ($scope, Game) ->
