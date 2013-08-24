@@ -83,6 +83,9 @@ app.factory 'Player', ->
 app.factory 'Game', ( Board, Player) ->
   class Game
     constructor: ->
+      @newBoard()
+
+    newBoard: ->
       @players = [
         new Player("X")
         new Player("O")
@@ -95,7 +98,10 @@ app.factory 'Game', ( Board, Player) ->
 
     advanceTurn: ->
       @currentPlayerIndex = (@currentPlayerIndex + 1) % @players.length
-      @board.checkVictory()
+      if @board.checkVictory()
+        alert("you win congrats etc")
+        @newBoard()
+
 
 
 app.controller 'GameCtrl', ($scope, Game) ->
