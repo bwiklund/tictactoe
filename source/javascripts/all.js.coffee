@@ -1,34 +1,48 @@
 app = angular.module('tictactoe',[])
 
+
 # an array of numbers would work but ng-repeat likes unique objects
 app.factory 'Square', ->
   class Square
-    mark: (@player) ->
-    style: -> 'player-' + @player
-    glyph: -> @player?.glyph || "_"
+    constructor: (@board) ->
+    
+    style: -> 
+      'player-' + @player
+    
+    glyph: -> 
+      @player?.glyph || "_"
+
+    mark: (player) -> 
+      #todo: validation
+      @player = player
+
 
 app.factory 'Board', (Square) ->
   class Board
     constructor: (@width) ->
-      @grid = ( new Square for i in [0...@width*@width] )
+      @grid = ( new Square(@board) for i in [0...@width*@width] )
 
     xy2index: (x,y) ->
       y * @width + x
 
-    move: (x,y,player) ->
-      # TODO: validate
-      @grid[ @index(x,y) ].mark player
-
     checkVictory: ->
       false #stub
+
 
 app.factory 'Player', ->
   class Player
     constructor: (@glyph) ->
 
-app.controller 'GameCtrl', ($scope, Board, Player) ->
-  $scope.players = [
-    new Player("X")
-    new Player("O")
-  ]
-  $scope.board = new Board(3)
+
+app.factory 'Game', ( Board, Player) ->
+  class Game
+    constructor: ->
+      @players = [
+        new Player("X")
+        new Player("O")
+      ]
+      @board = new Board(3)
+
+
+app.controller 'GameCtrl', ($scope, Game) ->
+  $scope.game = new Game()
