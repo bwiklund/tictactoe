@@ -38,28 +38,36 @@ app.factory 'Board', (Square) ->
 
       # check rows. no time to explain
       for y in [0...@width]
-        lastCell = null
+        sequence = []
         for x in [0...@width]
-          thisCell = @grid[ indexFn(x,y) ].player
-
-          # empty square means no winner in this row
-          if thisCell == null
-            lastCell = null
-            break
-
-          # first cell
-          if lastCell == null
-            lastCell = thisCell
-            continue
-
-          # subsequent cells
-          if lastCell != thisCell
-            lastCell = null
-            break
-
-        if lastCell then return true
+          sequence.push( @grid[ indexFn(x,y) ].player )
+        return true if @checkSequence sequence
 
       false
+
+    # take an array of squares and say if it's a all one player
+    checkSequence: (squares) ->
+      lastCell = null
+
+      for thisCell in squares
+
+        # empty square means no winner in this row
+        if thisCell == null
+          lastCell = null
+          break
+
+        # first cell
+        if lastCell == null
+          lastCell = thisCell
+          continue
+
+        # subsequent cells
+        if lastCell != thisCell
+          lastCell = null
+          break
+
+      if lastCell then return true
+
 
 
 app.factory 'Player', ->
