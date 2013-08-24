@@ -15,12 +15,12 @@ app.factory 'Square', ->
     mark: (player) -> 
       #todo: validation
       @player = player
-      @board.checkVictory()
+      @board.game.advanceTurn()
 
 
 app.factory 'Board', (Square) ->
   class Board
-    constructor: (@width) ->
+    constructor: (@game,@width) ->
       @grid = ( new Square(this) for i in [0...@width*@width] )
 
     xy2index: (x,y) ->
@@ -43,11 +43,14 @@ app.factory 'Game', ( Board, Player) ->
         new Player("X")
         new Player("O")
       ]
-      @board = new Board(3)
+      @board = new Board(this,3)
       @currentPlayerIndex = 0
 
     currentPlayer: ->
       @players[@currentPlayerIndex]
+
+    advanceTurn: ->
+      @currentPlayerIndex = (@currentPlayerIndex + 1) % @players.length
 
 
 app.controller 'GameCtrl', ($scope, Game) ->
