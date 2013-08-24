@@ -27,10 +27,9 @@ app.factory 'Board', (Square) ->
       y * @width + x
 
     checkVictory: ->
-      if @checkStraightLines( (x,y) => (@xy2index(x,y) ) )
-        return true
-      if @checkStraightLines( (x,y) => (@xy2index(y,x) ) )
-        return true
+      return true if @checkStraightLines( (x,y) => (@xy2index(x,y) ) )
+      return true if @checkStraightLines( (x,y) => (@xy2index(y,x) ) )
+      return true if @checkDiagonals()
       return false
 
     # so we can reuse this to check rows and cols
@@ -43,6 +42,12 @@ app.factory 'Board', (Square) ->
           sequence.push( @grid[ indexFn(x,y) ].player )
         return true if @checkSequence sequence
 
+      false
+
+    checkDiagonals: ->
+      # no time left, i regret nothing
+      return true if @checkSequence( ( @grid[ @xy2index(i,i) ].player          for i in [0...@width] ) )
+      return true if @checkSequence( ( @grid[ @xy2index(i,@width-1-i) ].player for i in [0...@width] ) )
       false
 
     # take an array of squares and say if it's a all one player
