@@ -27,15 +27,20 @@ app.factory 'Board', (Square) ->
       y * @width + x
 
     checkVictory: ->
-      console.log("i am now checking for victory.")
+      if @checkStraightLines( (x,y) => (@xy2index(x,y) ) )
+        return true
+      if @checkStraightLines( (x,y) => (@xy2index(y,x) ) )
+        return true
+      return false
 
-      winner = null
+    # so we can reuse this to check rows and cols
+    checkStraightLines: (indexFn) ->
 
       # check rows. no time to explain
       for y in [0...@width]
         lastCell = null
         for x in [0...@width]
-          thisCell = @grid[ @xy2index(x,y) ].player
+          thisCell = @grid[ indexFn(x,y) ].player
 
           # empty square means no winner in this row
           if thisCell == null
