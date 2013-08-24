@@ -1,2 +1,3 @@
 div ng-app="tictactoe" ng-controller="GameCtrl"
-  p {{board}}
+  .board
+  	.square ng-repeat="square in board.grid" ng-class="square.style()" a
