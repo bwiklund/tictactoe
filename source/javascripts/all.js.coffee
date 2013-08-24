@@ -5,6 +5,7 @@ app.factory 'Square', ->
   class Square
     mark: (@player) ->
     style: -> 'player-' + @player
+    glyph: -> @player?.glyph || "_"
 
 app.factory 'Board', (Square) ->
   class Board
@@ -23,11 +24,11 @@ app.factory 'Board', (Square) ->
 
 app.factory 'Player', ->
   class Player
-    constructor: (@name) ->
+    constructor: (@glyph) ->
 
 app.controller 'GameCtrl', ($scope, Board, Player) ->
   $scope.players = [
-    new Player("milo")
-    new Player("wyatt")
+    new Player("X")
+    new Player("O")
   ]
   $scope.board = new Board(3)
