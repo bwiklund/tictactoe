@@ -1,3 +1,4 @@
-div ng-app="tictactoe" ng-controller="GameCtrl"
+.tic-tac-toe ng-app="tictactoe" ng-controller="GameCtrl"
+  .message Current turn: {{game.currentPlayer().glyph}}
   .board
   	.square ng-repeat="square in game.board.grid" ng-class="square.style()" ng-click="square.mark(game.currentPlayer())" {{square.glyph()}}
