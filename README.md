@@ -1,8 +1,8 @@
-floormat
-========
+tictactoe
+===
 
-An empty middleman project, set up with my favorites. Saves five minutes of setup.
+to run:
 
-- Coffeescript
-- Slim
-- Sass
+```
+middleman
+```
