@@ -44,6 +44,10 @@ app.factory 'Game', ( Board, Player) ->
         new Player("O")
       ]
       @board = new Board(3)
+      @currentPlayerIndex = 0
+
+    currentPlayer: ->
+      @players[@currentPlayerIndex]
 
 
 app.controller 'GameCtrl', ($scope, Game) ->
